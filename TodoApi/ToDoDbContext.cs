@@ -1,53 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
-using TodoApi;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace TodoApi;
-
-public partial class ToDoDbContext : DbContext
+namespace TodoApi
 {
-    public ToDoDbContext()
+    public class ToDoDbContext : DbContext
     {
-    }
-
-    public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
-        : base(options)
-    {
-    }
-
-    public virtual DbSet<Item> Items { get; set; }
-
-    public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
+        public ToDoDbContext(DbContextOptions<ToDoDbContext> options)
+            : base(options)
         {
-            // This will only run if the DbContext hasn't been configured yet,
-            // which is a safeguard for when using dependency injection
-            throw new InvalidOperationException("DbContext must be configured using dependency injection");
+        }
+
+        public DbSet<Item> Items { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // הגדרת הטבלה Items
+            modelBuilder.Entity<Item>(entity =>
+            {
+                entity.ToTable("Items");
+                entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+                entity.Property(e => e.Name)
+                      .HasMaxLength(100)
+                      .IsRequired(false); // לפי הקוד שכתבת, אפשרות ל-null
+
+                entity.Property(e => e.IsComplete)
+                      .HasColumnType("tinyint(1)")
+                      .IsRequired(false);
+            });
+
+            // הגדרת הטבלה Users
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("Users");
+                entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+                entity.Property(e => e.Username)
+                      .HasMaxLength(100)
+                      .IsRequired();
+
+                entity.Property(e => e.Password)
+                      .HasMaxLength(100)
+                      .IsRequired();
+            });
         }
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
-            .HasCharSet("utf8mb4");
+    
 
-        modelBuilder.Entity<Item>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("items");
-
-            entity.Property(e => e.Name).HasMaxLength(100);
-        });
-
-        OnModelCreatingPartial(modelBuilder);
-    }
-
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }

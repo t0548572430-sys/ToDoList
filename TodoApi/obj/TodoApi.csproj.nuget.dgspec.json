@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj": {}
+    "C:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj": {}
   },
   "projects": {
-    "c:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj": {
+    "C:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj",
+        "projectUniqueName": "C:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "c:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj",
+        "projectPath": "C:\\לימודים\\task4\\ToDoApi\\TodoApi.csproj",
         "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
-        "outputPath": "c:\\לימודים\\task4\\ToDoApi\\obj\\",
+        "outputPath": "C:\\לימודים\\task4\\ToDoApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
