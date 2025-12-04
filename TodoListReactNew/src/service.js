@@ -3,13 +3,32 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:5244";
 
 // הוספת ה־JWT לכל בקשה
-axios.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = "Bearer " + token;
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // הדפסה ברורה יותר של השגיאה
+    if (error.response) {
+      // השגיאה נשלחה מהשרת
+      console.error("API ERROR response data:", error.response.data);
+      console.error("API ERROR status:", error.response.status);
+    } else if (error.request) {
+      // הבקשה נשלחה אבל לא התקבלה תגובה
+      console.error("API ERROR request:", error.request);
+    } else {
+      // שגיאה אחרת
+      console.error("API ERROR message:", error.message);
+    }
+
+    // טיפול ב־401
+    if (error.response && error.response.status === 401) {
+      console.log("401 detected → redirecting to login");
+      window.location.href = "/login.html";
+    }
+
+    return Promise.reject(error);
   }
-  return config;
-});
+);
+
 
 // טיפול בשגיאות והפניה ללוגין
 axios.interceptors.response.use(
