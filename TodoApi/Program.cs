@@ -75,7 +75,18 @@ if (app.Environment.IsDevelopment())
 // Map endpoints
 app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/todos", async (ToDoDbContext db) => await db.Items.ToListAsync());
+app.MapGet("/todos", async (ToDoDbContext db) => {
+    try
+    {
+        return Results.Ok(await db.Items.ToListAsync());
+    }
+    catch(Exception ex)
+    {
+        Console.WriteLine(ex);
+        return Results.Problem(ex.Message);
+    }
+});
+
 
 app.MapPost("/todos", async (ToDoDbContext db, Item todo) =>
 {
